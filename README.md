@@ -13,15 +13,14 @@ my_project/
 ├── docker-compose.yml
 ├── requirements.txt
 ├── script.py
+├── config.yaml
 ├── data.csv
 └── target_strings.txt
 ```
 
-- `data.csv`: 入力CSVファイル。
-- `target_strings.txt`: 検索する文字列が改行ごとにリストされたテキストファイル。
-- `docker-compose.yml`: Docker Composeの設定ファイル。
-- `requirements.txt`: 必要なPythonパッケージを指定するファイル。
-- `script.py`: CSVフィルタリングを行うPythonスクリプト。
+- `data.csv`: 入力CSVファイル。（ユーザーが自分で用意してください）。
+- `target_strings.txt`: 検索する文字列が改行ごとにリストされたテキストファイル。（ユーザーが自分で用意してください）。
+- `config.yaml`: プログラムの設定ファイル。（内容は適宜変更してください）。
 
 ### 2. 実行手順
 #### 1. Docker Composeの起動
@@ -46,15 +45,21 @@ python /app/script.py
 
 これにより、data.csvの内容が指定された条件でフィルタリングされ、結果がoutput/filtered_data.csvに保存されます。
 
-### 3. 注意事項
+### 3. デバッグ情報
 
-data.csvとtarget_strings.txtのファイルパスは、script.py内で設定されたパスに合わせてください。
+デバッグフラグが有効になっている場合、以下の情報がコンソールに出力されます。
 
-target_strings.txtの改行コードは、newline_char変数で指定してください（例：\n、\r\n）。
+- target_strings の内容と改行コード
+- 読み込んだ列のデータ
+- データフレームのヘッドと統計情報
 
-encoding変数で指定された文字コードは、CSVファイルのエンコードに一致する必要があります。
+### 4. 注意事項
 
-### 4. 最後に 
+- data.csvとtarget_strings.txtのファイルパスは、script.py内で設定されたパスに合わせてください。
+- target_strings.txtの改行コードは、newline_char変数で指定してください（例：\n、\r\n）。
+- encoding変数で指定された文字コードは、CSVファイルのエンコードに一致する必要があります。
+
+### 5. 最後に 
 
 本プログラムの開発には、ChatGPTに協力していただきました。
 

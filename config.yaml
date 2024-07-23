@@ -1,0 +1,28 @@
+# config.yaml
+
+# 入力CSVファイルのパス
+csv_file_path: '/app/data.csv'
+
+# 出力先ディレクトリ
+output_dir: '/app/output'
+
+# 出力CSVファイルのファイル名
+output_file_path: 'filtered_data.csv'
+
+# CSVファイルの文字コード
+encoding: 'utf-8'
+
+# 検索する文字列が記載されたテキストファイルのパス
+target_strings_file_path: '/app/target_strings.txt'
+
+# 検索対象の列番号（0から始まる）
+column_index: 0
+
+# CSVファイルにヘッダーが含まれているかどうか（ヘッダーありの場合はtrue、なしの場合はfalse）
+header_flag: true
+
+# 改行コード（例：\n、\r\n）
+newline_char: "\n"
+
+# デバッグフラグ（デバッグモードの場合はtrue）
+debug_flag: true

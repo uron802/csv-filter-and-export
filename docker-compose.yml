@@ -2,15 +2,11 @@ version: '3.8'
 
 services:
   python:
-    image: python:3.8-slim
+    build: .
     container_name: python_container
     working_dir: /app
     volumes:
       - ./:/app
     environment:
       - PYTHONUNBUFFERED=1
-    command: >
-      sh -c "
-      pip install --no-cache-dir -r reqirements.txt &&
-      tail -f /dev/null
-      "
+    command: tail -f /dev/null  # コンテナを起動後に待機状態にする
