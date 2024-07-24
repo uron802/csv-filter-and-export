@@ -1,7 +1,7 @@
 # config.yaml
 
 # 入力CSVファイルのパス
-csv_file_path: '/app/data.csv'
+csv_file_path: '/app/data/data.csv'
 
 # 出力先ディレクトリ
 output_dir: '/app/output'
@@ -13,7 +13,7 @@ output_file_path: 'filtered_data.csv'
 encoding: 'utf-8'
 
 # 検索する文字列が記載されたテキストファイルのパス
-target_strings_file_path: '/app/target_strings.txt'
+target_strings_file_path: '/app/target/target_strings.txt'
 
 # 検索対象の列番号（0から始まる）
 column_index: 0

@@ -1,12 +1,13 @@
 version: '3.8'
-
 services:
   python:
-    build: .
-    container_name: python_container
-    working_dir: /app
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
     volumes:
-      - ./:/app
-    environment:
-      - PYTHONUNBUFFERED=1
-    command: tail -f /dev/null  # コンテナを起動後に待機状態にする
+      - ./app:/app
+      - ./data:/app/data
+      - ./target:/app/target
+      - ./output:/app/output
+    working_dir: /app
+    command: sh -c "tail -f /dev/null"  # コンテナ起動時にスクリプトを実行せず、手動で実行

@@ -10,17 +10,19 @@
 
 ```
 my_project/
-├── docker-compose.yml
-├── requirements.txt
-├── script.py
-├── config.yaml
-├── data.csv
-└── target_strings.txt
+├── app/
+│   ├── script.py
+│   ├── config.yaml  # プログラムの設定ファイル。（内容は適宜変更してください）。
+│   └── requirements.txt
+├── docker/
+│   └── Dockerfile
+├── data/
+│   └── data.csv  # ユーザーが用意する入力ファイル
+├── target/
+│   └── target_strings.txt  # ユーザーが用意する検索文字列ファイル
+└── output/
+    └── filtered_data.csv  # フィルタリング結果が保存されるファイル
 ```
-
-- `data.csv`: 入力CSVファイル。（ユーザーが自分で用意してください）。
-- `target_strings.txt`: 検索する文字列が改行ごとにリストされたテキストファイル。（ユーザーが自分で用意してください）。
-- `config.yaml`: プログラムの設定ファイル。（内容は適宜変更してください）。
 
 ### 2. 実行手順
 #### 1. Docker Composeの起動
@@ -34,7 +36,7 @@ docker-compose up -d
 コンテナ内に入るには以下のコマンドを実行します。
 
 ```
-docker exec -it python_container sh
+docker-compose exec python sh
 ```
 
 #### 3. コンテナ内で以下のコマンドを実行して、Pythonスクリプトを実行します。
