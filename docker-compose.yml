@@ -8,5 +8,6 @@ services:
       - ./data:/app/data
       - ./target:/app/target
       - ./output:/app/output
+      - ./tests:/app/tests
     working_dir: /app
     command: sh -c "tail -f /dev/null"  # コンテナ起動時にスクリプトを実行せず、手動で実行

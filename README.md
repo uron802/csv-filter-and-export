@@ -20,6 +20,12 @@ my_project/
 │   └── data.csv  # ユーザーが用意する入力ファイル
 ├── target/
 │   └── target_strings.txt  # ユーザーが用意する検索文字列ファイル
+├── tests/
+│   ├── fixtures/
+│   │   ├── test_config.yaml
+│   │   ├── test_data.csv
+│   │   └── test_target_strings.txt
+│   └── test_script.py
 └── output/
     └── filtered_data.csv  # フィルタリング結果が保存されるファイル
 ```
@@ -47,7 +53,23 @@ python /app/script.py
 
 これにより、data.csvの内容が指定された条件でフィルタリングされ、結果がoutput/filtered_data.csvに保存されます。
 
-### 3. デバッグ情報
+### 3. テスト実行方法
+
+Docker環境内でテストを実行するには、以下のコマンドを使用します。
+
+```
+./run_tests_docker.sh
+```
+
+または、コンテナ内で直接実行することもできます。
+
+```
+docker-compose exec python sh -c "cd /app && pytest -xvs tests/"
+```
+
+VSCodeのテストエクスプローラーでもテストを実行できます。プロジェクトルートの`pytest.ini`ファイルにより、テストが自動的に認識されます。
+
+### 4. デバッグ情報
 
 デバッグフラグが有効になっている場合、以下の情報がコンソールに出力されます。
 
@@ -55,13 +77,13 @@ python /app/script.py
 - 読み込んだ列のデータ
 - データフレームのヘッドと統計情報
 
-### 4. 注意事項
+### 5. 注意事項
 
 - data.csvとtarget_strings.txtのファイルパスは、script.py内で設定されたパスに合わせてください。
 - target_strings.txtの改行コードは、newline_char変数で指定してください（例：\n、\r\n）。
 - encoding変数で指定された文字コードは、CSVファイルのエンコードに一致する必要があります。
 
-### 5. 最後に 
+### 6. 最後に 
 
 本プログラムの開発には、ChatGPTに協力していただきました。
 
