@@ -3,7 +3,12 @@ import shutil
 import pandas as pd
 import pytest
 import sys
-sys.path.append('/home/runner/work/csv-filter-and-export/csv-filter-and-export/app')
+from pathlib import Path
+
+# Add app directory to Python path - works in any environment
+APP_DIR = str(Path(__file__).parent.parent / 'app')
+if APP_DIR not in sys.path:
+    sys.path.append(APP_DIR)
 import script
 
 # テスト用のパス設定
