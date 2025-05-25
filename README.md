@@ -55,21 +55,6 @@ python /app/script.py
 
 ### 3. テスト実行方法
 
-#### 1. ローカル環境でのテスト実行
-テストを実行するには、リポジトリのルートディレクトリで以下のコマンドを実行します。
-
-```
-./run_tests.sh
-```
-
-または、pytestを直接実行することもできます。
-
-```
-pip install -r app/requirements.txt
-pytest -xvs tests/
-```
-
-#### 2. Docker環境でのテスト実行
 Docker環境内でテストを実行するには、以下のコマンドを使用します。
 
 ```
@@ -81,6 +66,8 @@ Docker環境内でテストを実行するには、以下のコマンドを使�
 ```
 docker-compose exec python sh -c "cd /app && pytest -xvs tests/"
 ```
+
+VSCodeのテストエクスプローラーでもテストを実行できます。プロジェクトルートの`pytest.ini`ファイルにより、テストが自動的に認識されます。
 
 ### 4. デバッグ情報
 
