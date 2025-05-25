@@ -1,0 +1,9 @@
+csv_file_path: '/tmp/test_data.csv'
+output_dir: '/tmp/test_output'
+output_file_path: 'test_filtered_data.csv'
+encoding: 'utf-8'
+target_strings_file_path: '/tmp/test_target_strings.txt'
+column_index: 2
+header_flag: true
+newline_char: "\n"
+debug_flag: false
