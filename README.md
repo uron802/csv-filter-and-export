@@ -38,14 +38,14 @@ my_project/
 docker-compose up -d
 ```
 
-#### 2. コンテナ内でPythonスクリプトを実行
+#### 2. コンテナに入る
 コンテナ内に入るには以下のコマンドを実行します。
 
 ```
 docker-compose exec python sh
 ```
 
-#### 3. コンテナ内で以下のコマンドを実行して、Pythonスクリプトを実行します。
+#### 3. Pythonスクリプトを実行
 
 ```
 python /app/script.py

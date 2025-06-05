@@ -14,7 +14,10 @@ def load_config(config_file_path='/app/config.yaml'):
     return config
 
 def load_target_strings(target_strings_file_path, encoding, newline_char, debug_flag=False):
-    """ターゲット文字列をファイルから読み込む"""
+    """ターゲット文字列をファイルから読み込む
+
+    ファイルは ``newline=''`` を指定して開き、改行コードを変換しません。
+    """
     # ``newline`` を空文字にすることで改行コードをそのまま取得する
     # (Windows の CRLF なども変換せずに読み込む)
     with open(target_strings_file_path, 'r', encoding=encoding, newline='') as f:
