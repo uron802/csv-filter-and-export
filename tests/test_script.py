@@ -154,11 +154,14 @@ def test_main_function():
     
     teardown_function()  # クリーンアップ
 
-def test_debug_log():
+def test_debug_log(capsys):
     """デバッグログ関数が正しく動作するかテスト"""
-    # デバッグフラグがFalseの場合、何も出力されない
-    assert script.debug_log("Test message", False) is None
-    
-    # デバッグフラグがTrueの場合は出力される（この部分は直接テストしにくい）
-    # ここではエラーが発生しないことだけを確認
-    assert script.debug_log("Test message", True) is None
+    # デバッグフラグがFalseの場合、何も出力されないことを確認
+    script.debug_log("Test message", False)
+    captured = capsys.readouterr()
+    assert captured.out == ""
+
+    # デバッグフラグがTrueの場合、メッセージが出力されることを確認
+    script.debug_log("Test message", True)
+    captured = capsys.readouterr()
+    assert captured.out == "Test message\n"
