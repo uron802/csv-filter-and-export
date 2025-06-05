@@ -78,6 +78,24 @@ def test_load_target_strings():
     
     teardown_function()  # クリーンアップ
 
+
+def test_load_target_strings_crlf():
+    """CRLF 改行のファイルでも正しく読み込めるかテスト"""
+    test_file = os.path.join(FIXTURES_DIR, 'test_target_strings_crlf.txt')
+    tmp_path = '/tmp/test_target_strings_crlf.txt'
+    shutil.copy(test_file, tmp_path)
+
+    target_strings = script.load_target_strings(
+        tmp_path,
+        'utf-8',
+        '\r\n',
+        False
+    )
+
+    assert target_strings == ['red', 'orange']
+
+    os.remove(tmp_path)
+
 def test_filter_csv():
     """CSVフィルタリングが正しく動作するかテスト"""
     setup_function()  # セットアップ

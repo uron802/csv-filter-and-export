@@ -15,7 +15,9 @@ def load_config(config_file_path='/app/config.yaml'):
 
 def load_target_strings(target_strings_file_path, encoding, newline_char, debug_flag=False):
     """ターゲット文字列をファイルから読み込む"""
-    with open(target_strings_file_path, 'r', encoding=encoding) as file:
+    # ``newline`` を空文字にすることで改行コードをそのまま取得する
+    # (Windows の CRLF なども変換せずに読み込む)
+    with open(target_strings_file_path, 'r', encoding=encoding, newline='') as file:
         raw_target_strings = file.read()
     
     debug_log(f"Raw content read from file:\n{raw_target_strings}", debug_flag)
