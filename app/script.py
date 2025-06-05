@@ -47,11 +47,16 @@ def filter_csv(csv_file_path, encoding, column_index, header_flag, target_string
     
     return filtered_df
 
-def save_filtered_csv(filtered_df, output_dir, output_file_path, encoding, debug_flag=False):
+def save_filtered_csv(filtered_df, output_dir, output_file_path, encoding, debug_flag=False, newline_char="\n"):
     """フィルタリングされたデータをCSVファイルとして保存する"""
     os.makedirs(output_dir, exist_ok=True)
     output_file = os.path.join(output_dir, output_file_path)
-    filtered_df.to_csv(output_file, index=False, encoding=encoding)
+    filtered_df.to_csv(
+        output_file,
+        index=False,
+        encoding=encoding,
+        lineterminator=newline_char
+    )
     
     debug_log(f"Filtered data saved to {output_file}", debug_flag)
     
@@ -97,7 +102,8 @@ def main(config_file_path='/app/config.yaml'):
         output_dir,
         output_file_path,
         encoding,
-        debug_flag
+        debug_flag,
+        newline_char
     )
 
 # スクリプトが直接実行された場合のみメイン処理を実行

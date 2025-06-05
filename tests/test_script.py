@@ -30,6 +30,10 @@ def setup_function():
     # テスト用のファイルをコピー
     shutil.copy(TEST_DATA_CSV, '/tmp/test_data.csv')
     shutil.copy(TEST_TARGET_STRINGS, '/tmp/test_target_strings.txt')
+    shutil.copy(
+        os.path.join(FIXTURES_DIR, 'test_target_strings_crlf.txt'),
+        '/tmp/test_target_strings_crlf.txt'
+    )
 
 # テスト実行後のクリーンアップ
 def teardown_function():
@@ -38,6 +42,8 @@ def teardown_function():
         os.remove('/tmp/test_data.csv')
     if os.path.exists('/tmp/test_target_strings.txt'):
         os.remove('/tmp/test_target_strings.txt')
+    if os.path.exists('/tmp/test_target_strings_crlf.txt'):
+        os.remove('/tmp/test_target_strings_crlf.txt')
     if os.path.exists(TEST_OUTPUT_DIR):
         shutil.rmtree(TEST_OUTPUT_DIR)
 
@@ -141,7 +147,8 @@ def test_save_filtered_csv():
         TEST_OUTPUT_DIR,
         'test_filtered_data.csv',
         'utf-8',
-        False
+        False,
+        '\r\n'
     )
     
     # ファイルが存在するか確認
@@ -151,6 +158,12 @@ def test_save_filtered_csv():
     saved_df = pd.read_csv(output_file)
     assert len(saved_df) == 3
     assert list(saved_df.columns) == ['id', 'name', 'description']
+
+    # 保存されたファイルの改行コードが正しいか確認
+    with open(output_file, 'r', newline='') as f:
+        content = f.read()
+    assert content.count('\r\n') == len(df) + 1
+    assert '\n' not in content.replace('\r\n', '')
     
     teardown_function()  # クリーンアップ
 
@@ -169,8 +182,24 @@ def test_main_function():
     output_df = pd.read_csv(output_file)
     assert isinstance(output_df, pd.DataFrame)
     assert len(output_df) == 3  # 'red'または'orange'を含む行は3行
-    
+
     teardown_function()  # クリーンアップ
+
+
+def test_main_function_crlf_output():
+    """CRLF 改行設定で出力されるCSVの改行を確認"""
+    setup_function()
+
+    config_path = os.path.join(FIXTURES_DIR, 'test_config_crlf.yaml')
+    script.main(config_path)
+
+    output_file = os.path.join(TEST_OUTPUT_DIR, 'test_filtered_data.csv')
+    with open(output_file, 'r', newline='') as f:
+        content = f.read()
+
+    assert content.count('\r\n') == 4
+
+    teardown_function()
 
 def test_debug_log():
     """デバッグログ関数が正しく動作するかテスト"""
