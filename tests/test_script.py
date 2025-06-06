@@ -62,8 +62,6 @@ def test_load_config():
 
 def test_load_target_strings():
     """ターゲット文字列が正しく読み込まれるかテスト"""
-    setup_function()  # セットアップ
-    
     target_strings = script.load_target_strings(
         '/tmp/test_target_strings.txt',
         'utf-8',
@@ -76,12 +74,9 @@ def test_load_target_strings():
     assert 'red' in target_strings
     assert 'orange' in target_strings
     
-    teardown_function()  # クリーンアップ
 
 def test_filter_csv():
     """CSVフィルタリングが正しく動作するかテスト"""
-    setup_function()  # セットアップ
-    
     # テスト用のターゲット文字列
     target_strings = ['red', 'orange']
     
@@ -103,12 +98,9 @@ def test_filter_csv():
     actual_ids = filtered_df['id'].tolist()
     assert sorted(actual_ids) == sorted(expected_ids)
     
-    teardown_function()  # クリーンアップ
 
 def test_save_filtered_csv():
     """フィルタリングされたデータが正しく保存されるかテスト"""
-    setup_function()  # セットアップ
-    
     # テスト用のデータフレーム
     data = {
         'id': [1, 3, 5],
@@ -134,12 +126,9 @@ def test_save_filtered_csv():
     assert len(saved_df) == 3
     assert list(saved_df.columns) == ['id', 'name', 'description']
     
-    teardown_function()  # クリーンアップ
 
 def test_main_function():
     """メイン関数がエラーなく実行できるかテスト"""
-    setup_function()  # セットアップ
-    
     # メイン関数を実行
     script.main(TEST_CONFIG_PATH)
     
@@ -152,7 +141,6 @@ def test_main_function():
     assert isinstance(output_df, pd.DataFrame)
     assert len(output_df) == 3  # 'red'または'orange'を含む行は3行
     
-    teardown_function()  # クリーンアップ
 
 def test_debug_log(capsys):
     """デバッグログ関数が正しく動作するかテスト"""
