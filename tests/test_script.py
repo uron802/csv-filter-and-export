@@ -19,21 +19,19 @@ TEST_DATA_CSV = os.path.join(FIXTURES_DIR, 'test_data.csv')
 TEST_TARGET_STRINGS = os.path.join(FIXTURES_DIR, 'test_target_strings.txt')
 TEST_OUTPUT_DIR = '/tmp/test_output'
 
-# テスト実行前に必要なセットアップを行う
-def setup_function():
-    # テスト用のデータをセットアップ
+
+@pytest.fixture()
+def setup_test_files():
+    """テスト用のファイルを /tmp にコピーし、終了後にクリーンアップする"""
     if os.path.exists(TEST_OUTPUT_DIR):
         shutil.rmtree(TEST_OUTPUT_DIR)
-    
     os.makedirs(TEST_OUTPUT_DIR, exist_ok=True)
-    
-    # テスト用のファイルをコピー
+
     shutil.copy(TEST_DATA_CSV, '/tmp/test_data.csv')
     shutil.copy(TEST_TARGET_STRINGS, '/tmp/test_target_strings.txt')
 
-# テスト実行後のクリーンアップ
-def teardown_function():
-    # テスト用のファイルを削除
+    yield
+
     if os.path.exists('/tmp/test_data.csv'):
         os.remove('/tmp/test_data.csv')
     if os.path.exists('/tmp/test_target_strings.txt'):
@@ -60,9 +58,8 @@ def test_load_config():
     assert config['column_index'] == 2
     assert config['header_flag'] is True
 
-def test_load_target_strings():
+def test_load_target_strings(setup_test_files):
     """ターゲット文字列が正しく読み込まれるかテスト"""
-    setup_function()  # セットアップ
     
     target_strings = script.load_target_strings(
         '/tmp/test_target_strings.txt',
@@ -76,11 +73,10 @@ def test_load_target_strings():
     assert 'red' in target_strings
     assert 'orange' in target_strings
     
-    teardown_function()  # クリーンアップ
+    
 
-def test_filter_csv():
+def test_filter_csv(setup_test_files):
     """CSVフィルタリングが正しく動作するかテスト"""
-    setup_function()  # セットアップ
     
     # テスト用のターゲット文字列
     target_strings = ['red', 'orange']
@@ -102,12 +98,9 @@ def test_filter_csv():
     expected_ids = [1, 3, 5]  # apple, orange, cherryの行のID
     actual_ids = filtered_df['id'].tolist()
     assert sorted(actual_ids) == sorted(expected_ids)
-    
-    teardown_function()  # クリーンアップ
 
-def test_save_filtered_csv():
+def test_save_filtered_csv(setup_test_files):
     """フィルタリングされたデータが正しく保存されるかテスト"""
-    setup_function()  # セットアップ
     
     # テスト用のデータフレーム
     data = {
@@ -133,12 +126,9 @@ def test_save_filtered_csv():
     saved_df = pd.read_csv(output_file)
     assert len(saved_df) == 3
     assert list(saved_df.columns) == ['id', 'name', 'description']
-    
-    teardown_function()  # クリーンアップ
 
-def test_main_function():
+def test_main_function(setup_test_files):
     """メイン関数がエラーなく実行できるかテスト"""
-    setup_function()  # セットアップ
     
     # メイン関数を実行
     script.main(TEST_CONFIG_PATH)
@@ -151,8 +141,6 @@ def test_main_function():
     output_df = pd.read_csv(output_file)
     assert isinstance(output_df, pd.DataFrame)
     assert len(output_df) == 3  # 'red'または'orange'を含む行は3行
-    
-    teardown_function()  # クリーンアップ
 
 def test_debug_log(capsys):
     """デバッグログ関数が正しく動作するかテスト"""
