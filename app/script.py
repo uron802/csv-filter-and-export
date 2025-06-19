@@ -35,13 +35,20 @@ def load_target_strings(target_strings_file_path, encoding, newline_char, debug_
 def filter_csv(csv_file_path, encoding, column_index, header_flag, target_strings, debug_flag=False):
     """CSVファイルをロードして、指定した列にターゲット文字列が含まれる行をフィルタリングする"""
     # CSVファイルの読み込み
-    df = pd.read_csv(csv_file_path, encoding=encoding, header=0 if header_flag else None)
+    df = pd.read_csv(
+        csv_file_path,
+        encoding=encoding,
+        header=0 if header_flag else None,
+        dtype=str,
+    )
     
     debug_log(f"Dataframe head:\n{df.head()}", debug_flag)
     debug_log(f"Total rows: {len(df)}, Total columns: {len(df.columns)}", debug_flag)
     
-    # フィルタリング
-    filtered_df = df[df.iloc[:, column_index].astype(str).apply(lambda x: any(target in x for target in target_strings))]
+    # フィルタリング（文字列としての完全一致）
+    column_series = df.iloc[:, column_index].astype(str)
+    target_strings = [str(t) for t in target_strings]
+    filtered_df = df[column_series.isin(target_strings)]
     
     debug_log(f"Filtered dataframe head:\n{filtered_df.head()}", debug_flag)
     debug_log(f"Total matched rows: {len(filtered_df)}", debug_flag)
