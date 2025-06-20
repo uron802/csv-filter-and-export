@@ -77,14 +77,14 @@ def test_load_target_strings():
 
 def test_filter_csv():
     """CSVフィルタリングが正しく動作するかテスト"""
-    # テスト用のターゲット文字列
+    # テスト用のターゲット文字列（完全一致）
     target_strings = ['red', 'orange']
     
     # フィルタリングを実行
     filtered_df = script.filter_csv(
         '/tmp/test_data.csv',
         'utf-8',
-        2,  # description列
+        2,  # description列（色名）
         True,  # ヘッダーあり
         target_strings,
         False  # デバッグフラグ
@@ -94,9 +94,27 @@ def test_filter_csv():
     assert len(filtered_df) == 3  # 'red'または'orange'を含む行は3行
     
     # 期待される結果をチェック
-    expected_ids = [1, 3, 5]  # apple, orange, cherryの行のID
+    expected_ids = ['1', '3', '5']  # apple, orange, cherryの行のID
     actual_ids = filtered_df['id'].tolist()
     assert sorted(actual_ids) == sorted(expected_ids)
+
+
+def test_filter_csv_string_equality():
+    """'01' と '1' が区別されるかテスト"""
+    csv_path = '/tmp/test_data_zero.csv'
+    with open(csv_path, 'w') as f:
+        f.write('id,name\n01,apple\n1,banana\n')
+
+    filtered_df = script.filter_csv(
+        csv_path,
+        'utf-8',
+        0,  # id列
+        True,
+        ['1'],
+        False,
+    )
+
+    assert filtered_df['id'].tolist() == ['1']
     
 
 def test_save_filtered_csv():
